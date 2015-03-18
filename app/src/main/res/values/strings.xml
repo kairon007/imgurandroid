@@ -2,4 +2,12 @@
     <string name="app_name">ImgurTest</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+
+    <string name="accept_lower">Ok</string>
+    <string name="cancel_lower">Cancel</string>
+    <string name="message">Message</string>
+    <string name="error_no_items_found">No items found for this section</string>
+    <string name="server_login">Fetching data, please wait...</string>
+    <string name="error_occurred_server">An error occured while trying to reach the server. Please try again later</string>
+
 </resources>

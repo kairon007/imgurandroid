@@ -1,6 +1,8 @@
 package example.mobilab.mzorz.com.imgurtest;
 
 
+import android.content.Context;
+
 import de.greenrobot.event.EventBus;
 
 /**
@@ -9,6 +11,7 @@ import de.greenrobot.event.EventBus;
 public class Application extends android.app.Application {
 
     private static final String TAG = "Application";
+    private static final String imgurClientId = "9199b131a0514e9";
 
     private static Application _instance;
 
@@ -29,6 +32,10 @@ public class Application extends android.app.Application {
 
     public static EventBus getEventBus() {
         return EventBus.getDefault();
+    }
+
+    public static String getAuthorizationHeader(){
+        return "Client-ID " + imgurClientId;
     }
 
 }
