@@ -86,6 +86,13 @@ public class DetailActivity extends BaseActivity {
     protected void onSaveInstanceState(Bundle outState) {
         //Save the fragment's instance
         getSupportFragmentManager().putFragment(outState, "myfragment", myFragment);
+
+        outState.putString("title", title);
+        outState.putString("description", description);
+        outState.putInt("upvotes", ups);
+        outState.putInt("downvotes", downs);
+        outState.putInt("score", scorei);
+        outState.putString("image", imageUrl);
         super.onSaveInstanceState(outState);
     }
 
