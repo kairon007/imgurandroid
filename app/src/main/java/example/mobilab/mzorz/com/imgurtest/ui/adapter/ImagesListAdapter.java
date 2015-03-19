@@ -14,12 +14,14 @@ import java.util.List;
 import example.mobilab.mzorz.com.imgurtest.R;
 import example.mobilab.mzorz.com.imgurtest.model.BaseModel;
 import example.mobilab.mzorz.com.imgurtest.model.Image;
+import example.mobilab.mzorz.com.imgurtest.ui.MainActivity;
 
 public class ImagesListAdapter extends BaseAdapter {
 
 	private Context mContext;
 	private LayoutInflater inflater;
 	private List<BaseModel> items;
+    private int MODE = 0;
 	/**
 	 * Constructor
 	 *
@@ -77,7 +79,12 @@ public class ImagesListAdapter extends BaseAdapter {
 		final View view;
 		holder holder;
 		if (convertView == null) {
-			view = inflater.inflate(R.layout.gallery_item, null);
+            if (MODE == MainActivity.MODE_GRID)
+			    view = inflater.inflate(R.layout.gallery_item_grid, null);
+            else if (MODE == MainActivity.MODE_LIST)
+                view = inflater.inflate(R.layout.gallery_item_list, null);
+            else
+                view = inflater.inflate(R.layout.gallery_item_grid, null);
 			holder = new holder();
 			holder.image = (ImageView) view.findViewById(R.id.image);
 			holder.title = (TextView)  view.findViewById(R.id.name);
@@ -107,6 +114,10 @@ public class ImagesListAdapter extends BaseAdapter {
 		
 	}
 
+    public void setMode(int mode){
+        this.MODE = mode;
+    }
+
     private String getThumbnailURL(String original){
         //read section "Image thumbnails" here https://api.imgur.com/models/image
         String thumb = original;
@@ -121,7 +132,6 @@ public class ImagesListAdapter extends BaseAdapter {
 	private class holder {
 		public ImageView image;
 		public TextView title;
-        public String thumbUrl;
 	}
 	
 

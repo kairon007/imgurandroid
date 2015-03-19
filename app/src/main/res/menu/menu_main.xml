@@ -65,6 +65,9 @@
             <item android:id="@+id/sectionuser"
                 android:title="Section user"
                 />
+            <item android:id="@+id/aboutapp"
+                android:title="About this app"
+                />
         </menu>
     </item>
 

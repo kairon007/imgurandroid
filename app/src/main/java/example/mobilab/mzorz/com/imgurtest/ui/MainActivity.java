@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -13,7 +14,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.GridView;
+import android.widget.ListView;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -30,6 +34,10 @@ import example.mobilab.mzorz.com.imgurtest.ui.adapter.ImagesListAdapter;
 public class MainActivity extends BaseActivity {
 
     private static String TAG = "imgurTest";
+    public static int MODE_GRID = 0;
+    public static int MODE_LIST = 1;
+    public static int MODE_STAGGERED_GRID = 2;
+
     private PlaceholderFragment myFragment;
     private boolean bIncludeViral = true;
     private String section = "hot";
@@ -53,6 +61,7 @@ public class MainActivity extends BaseActivity {
             bIncludeViral = savedInstanceState.getBoolean("viral", false);
             sort = savedInstanceState.getString("sort");
             window = savedInstanceState.getString("window");
+            //MODE = savedInstanceState.getInt("MODE");
         }
 
         Application.getEventBus().register(this);
@@ -65,6 +74,7 @@ public class MainActivity extends BaseActivity {
         outState.putString("sort", sort);
         outState.putString("window", window);
         outState.putBoolean("viral", bIncludeViral);
+        //outState.putInt("MODE", MODE);
         getSupportFragmentManager().putFragment(outState, "myfragment", myFragment);
         super.onSaveInstanceState(outState);
     }
@@ -89,6 +99,11 @@ public class MainActivity extends BaseActivity {
         switch (item.getItemId()) {
             case R.id.action_section:
                 Log.d(TAG, "SECTION PRESSED");
+                return true;
+
+            case R.id.aboutapp:
+                Intent i = new Intent(this, VersionActivity.class);
+                startActivity(i);
                 return true;
 
             case R.id.viral:
@@ -189,7 +204,12 @@ public class MainActivity extends BaseActivity {
     public static class PlaceholderFragment extends Fragment {
 
         private GridView gridView;
+        private ListView listView;
+        public ImagesListAdapter adapterList;
         public ImagesListAdapter adapter;
+        private RadioButton rdList;
+        private RadioButton rdGrid;
+        private RadioButton rdStaggeredGrid;
 
         public PlaceholderFragment() {
         }
@@ -201,7 +221,40 @@ public class MainActivity extends BaseActivity {
 
             gridView = (GridView) rootView.findViewById(R.id.gridview);
             adapter = new ImagesListAdapter(getActivity(), new ArrayList<BaseModel>());
+            adapter.setMode(MainActivity.MODE_GRID);
             gridView.setAdapter(adapter);
+
+            listView = (ListView) rootView.findViewById(R.id.listview);
+            adapterList = new ImagesListAdapter(getActivity(), new ArrayList<BaseModel>());
+            adapterList.setMode(MainActivity.MODE_LIST);
+            listView.setAdapter(adapterList);
+
+
+            rdList = (RadioButton) rootView.findViewById(R.id.rdList);
+            rdGrid = (RadioButton) rootView.findViewById(R.id.rdGrid);
+            rdStaggeredGrid = (RadioButton) rootView.findViewById(R.id.rdStaggeredGrid);
+
+            rdList.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (rdList.isChecked()){
+                        //switch to listview
+                        listView.setVisibility(View.VISIBLE);
+                        gridView.setVisibility(View.GONE);
+                    }
+                }
+            });
+
+            rdGrid.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (rdGrid.isChecked()){
+                        //switch to listview
+                        listView.setVisibility(View.GONE);
+                        gridView.setVisibility(View.VISIBLE);
+                    }
+                }
+            });
 
             return rootView;
         }
@@ -247,6 +300,9 @@ public class MainActivity extends BaseActivity {
         else{
             myFragment.adapter.setItemsList(event.object.data);
             myFragment.adapter.notifyDataSetChanged();
+
+            myFragment.adapterList.setItemsList(event.object.data);
+            myFragment.adapterList.notifyDataSetChanged();
         }
     }
 
