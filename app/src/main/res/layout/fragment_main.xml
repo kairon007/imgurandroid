@@ -24,11 +24,11 @@
             android:layout_height="wrap_content"
             android:checked="true"
             android:text="grid"/>
-        <RadioButton
-            android:id="@+id/rdStaggeredGrid"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="staggered grid"/>
+        <!--<RadioButton-->
+            <!--android:id="@+id/rdStaggeredGrid"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="staggered grid"/>-->
     </RadioGroup>
 
     <GridView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -53,4 +53,15 @@
         android:visibility="gone"
         >
     </ListView>
+
+    <com.etsy.android.grid.StaggeredGridView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/st_grid_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        app:item_margin="8dp"
+        app:column_count="2"
+        />
 </RelativeLayout>

@@ -83,8 +83,8 @@ public class ImagesListAdapter extends BaseAdapter {
 			    view = inflater.inflate(R.layout.gallery_item_grid, null);
             else if (MODE == MainActivity.MODE_LIST)
                 view = inflater.inflate(R.layout.gallery_item_list, null);
-            else
-                view = inflater.inflate(R.layout.gallery_item_grid, null);
+            else //staggered
+                view = inflater.inflate(R.layout.gallery_item_st_grid, null);
 			holder = new holder();
 			holder.image = (ImageView) view.findViewById(R.id.image);
 			holder.title = (TextView)  view.findViewById(R.id.name);

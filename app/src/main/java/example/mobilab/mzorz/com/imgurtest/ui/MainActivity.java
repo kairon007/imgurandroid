@@ -16,9 +16,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.Toast;
+
+import com.etsy.android.grid.StaggeredGridView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -205,11 +208,13 @@ public class MainActivity extends BaseActivity {
 
         private GridView gridView;
         private ListView listView;
+//        private StaggeredGridView staggeredGridView;
+//        public ImagesListAdapter adapterStaggeredGridView;
         public ImagesListAdapter adapterList;
         public ImagesListAdapter adapter;
         private RadioButton rdList;
         private RadioButton rdGrid;
-        private RadioButton rdStaggeredGrid;
+//        private RadioButton rdStaggeredGrid;
 
         public PlaceholderFragment() {
         }
@@ -229,10 +234,14 @@ public class MainActivity extends BaseActivity {
             adapterList.setMode(MainActivity.MODE_LIST);
             listView.setAdapter(adapterList);
 
+//            staggeredGridView = (StaggeredGridView) rootView.findViewById(R.id.st_grid_view);
+//            adapterStaggeredGridView = new ImagesListAdapter(getActivity(), new ArrayList<BaseModel>());
+//            adapterStaggeredGridView.setMode(MainActivity.MODE_STAGGERED_GRID);
+//            staggeredGridView.setAdapter(adapterStaggeredGridView);
 
             rdList = (RadioButton) rootView.findViewById(R.id.rdList);
             rdGrid = (RadioButton) rootView.findViewById(R.id.rdGrid);
-            rdStaggeredGrid = (RadioButton) rootView.findViewById(R.id.rdStaggeredGrid);
+//            rdStaggeredGrid = (RadioButton) rootView.findViewById(R.id.rdStaggeredGrid);
 
             rdList.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -241,6 +250,7 @@ public class MainActivity extends BaseActivity {
                         //switch to listview
                         listView.setVisibility(View.VISIBLE);
                         gridView.setVisibility(View.GONE);
+//                        staggeredGridView.setVisibility(View.GONE);
                     }
                 }
             });
@@ -251,10 +261,23 @@ public class MainActivity extends BaseActivity {
                     if (rdGrid.isChecked()){
                         //switch to listview
                         listView.setVisibility(View.GONE);
+//                        staggeredGridView.setVisibility(View.GONE);
                         gridView.setVisibility(View.VISIBLE);
                     }
                 }
             });
+
+//            rdStaggeredGrid.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    if (rdStaggeredGrid.isChecked()){
+//                        //switch to listview
+//                        listView.setVisibility(View.GONE);
+//                        gridView.setVisibility(View.GONE);
+//                        staggeredGridView.setVisibility(View.VISIBLE);
+//                    }
+//                }
+//            });
 
             return rootView;
         }
@@ -303,6 +326,9 @@ public class MainActivity extends BaseActivity {
 
             myFragment.adapterList.setItemsList(event.object.data);
             myFragment.adapterList.notifyDataSetChanged();
+
+//            myFragment.adapterStaggeredGridView.setItemsList(event.object.data);
+//            myFragment.adapterStaggeredGridView.notifyDataSetChanged();
         }
     }
 
