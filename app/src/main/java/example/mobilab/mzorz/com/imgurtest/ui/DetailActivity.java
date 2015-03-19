@@ -134,7 +134,7 @@ public class DetailActivity extends BaseActivity {
 
             if (simageUrl != null)
                 Picasso.with(getActivity())
-                        .load(ImagesListAdapter.getThumbnailURL(simageUrl, "l"))
+                        .load(ImagesListAdapter.getThumbnailURL(simageUrl, "m"))
                         .placeholder(R.drawable.ic_launcher)
                         .error(R.drawable.ic_launcher)
                         .into(image);
