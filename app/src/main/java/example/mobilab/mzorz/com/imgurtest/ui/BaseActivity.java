@@ -4,7 +4,13 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import example.mobilab.mzorz.com.imgurtest.R;
 
@@ -13,8 +19,14 @@ import example.mobilab.mzorz.com.imgurtest.R;
  */
 public class BaseActivity extends ActionBarActivity {
 
-    protected ProgressDialog progressDialog = new ProgressDialog(this);
+    protected ProgressDialog progressDialog;
 
+
+    @Override
+    protected void onCreate(Bundle bundle) {
+        super.onCreate(bundle);
+        progressDialog = new ProgressDialog(this);
+    }
 
     public void showError(Activity activity, String errormsg, boolean bShowCancel, DialogInterface.OnClickListener listener){
         AlertDialog.Builder alert = new AlertDialog.Builder(activity);
@@ -72,7 +84,6 @@ public class BaseActivity extends ActionBarActivity {
     public void dismissProgressDialog() {
         progressDialog.dismiss();
     }
-
 
 
 }

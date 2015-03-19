@@ -13,6 +13,7 @@ import java.util.List;
 
 import example.mobilab.mzorz.com.imgurtest.R;
 import example.mobilab.mzorz.com.imgurtest.model.BaseModel;
+import example.mobilab.mzorz.com.imgurtest.model.Image;
 
 public class ImagesListAdapter extends BaseAdapter {
 
@@ -88,24 +89,39 @@ public class ImagesListAdapter extends BaseAdapter {
 		
 		final BaseModel item = (BaseModel) getItem(position);
 
-        if (item.link != null)
-            Picasso.with(mContext)
-                    .load(item.link)
-                    .placeholder(R.drawable.ic_launcher)
-                    .error(R.drawable.ic_launcher)
-                    .into(holder.image);
-        else
-            holder.image.setImageResource(R.drawable.ic_launcher); //default placeholder
+        holder.title.setText(item.title);
+
+        if (item instanceof Image){
+            if (item.link != null)
+                Picasso.with(mContext)
+                        .load(getThumbnailURL(item.link))
+                        .into(holder.image);
+            else
+                holder.image.setImageBitmap(null);
+        }
+        else // in case this is an album, just provide a placeholder
+            holder.image.setImageBitmap(null);
 
 
 		return convertView;
 		
 	}
 
+    private String getThumbnailURL(String original){
+        //read section "Image thumbnails" here https://api.imgur.com/models/image
+        String thumb = original;
+        if (original != null){
+            String ext = original.substring(original.length()-4, original.length());
+            thumb = original.substring(0, original.length()-4);
+            thumb  = thumb + "m" + ext;
+        }
+        return thumb;
+    }
 
 	private class holder {
 		public ImageView image;
 		public TextView title;
+        public String thumbUrl;
 	}
 	
 

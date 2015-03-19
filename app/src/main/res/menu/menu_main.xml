@@ -1,6 +1,71 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" tools:context=".MainActivity">
-    <item android:id="@+id/action_settings" android:title="@string/action_settings"
-        android:orderInCategory="100" app:showAsAction="never" />
+
+    <item android:id="@+id/action_window"
+        android:icon="@drawable/ic_filter_list_white_48dp"
+        android:title="Filter"
+        app:showAsAction="ifRoom"
+        >
+        <menu>
+            <item android:id="@+id/window_top"
+                android:title="Window top"
+                />
+            <item android:id="@+id/window_day"
+                android:title="Window day"
+                />
+            <item android:id="@+id/window_week"
+                android:title="Window week"
+                />
+            <item android:id="@+id/window_year"
+                android:title="Window year"
+                />
+            <item android:id="@+id/window_all"
+                android:title="Window all"
+                />
+        </menu>
+    </item>
+
+    <item android:id="@+id/action_sort"
+        android:icon="@drawable/ic_menu2"
+        android:title="Filter"
+        app:showAsAction="ifRoom"
+        >
+        <menu>
+            <item android:id="@+id/sort_viral"
+                android:title="Sort by viral"
+                />
+            <item android:id="@+id/sort_top"
+                android:title="Sort by top"
+                />
+            <item android:id="@+id/sort_time"
+                android:title="Sort by time"
+                />
+            <item android:id="@+id/sort_rising"
+                android:title="Sort by Rising"
+                />
+        </menu>
+    </item>
+
+    <item android:id="@+id/action_section"
+        android:icon="@drawable/menu"
+        android:title="Filter"
+        app:showAsAction="ifRoom"
+        >
+        <menu>
+            <item android:id="@+id/viral"
+                android:title="Include Viral images"
+                android:checkable="true" />
+            <item android:id="@+id/sectionhot"
+                android:title="Section hot"
+                />
+            <item android:id="@+id/sectiontop"
+                android:title="Section top"
+                />
+            <item android:id="@+id/sectionuser"
+                android:title="Section user"
+                />
+        </menu>
+    </item>
+
 </menu>

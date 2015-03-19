@@ -7,23 +7,34 @@ import android.content.DialogInterface;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import example.mobilab.mzorz.com.imgurtest.Application;
 import example.mobilab.mzorz.com.imgurtest.R;
 import example.mobilab.mzorz.com.imgurtest.api.Event;
 import example.mobilab.mzorz.com.imgurtest.api.GalleryService;
+import example.mobilab.mzorz.com.imgurtest.model.BaseModel;
 import example.mobilab.mzorz.com.imgurtest.ui.adapter.ImagesListAdapter;
 
 
 public class MainActivity extends BaseActivity {
 
+    private static String TAG = "imgurTest";
     private PlaceholderFragment myFragment;
+    private boolean bIncludeViral = true;
+    private String section = "hot";
+    private String window = "day";
+    private String sort = "viral";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,33 +46,142 @@ public class MainActivity extends BaseActivity {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, myFragment)
                     .commit();
+        } else  {
+            //Restore the fragment's instance
+            myFragment = (PlaceholderFragment) getSupportFragmentManager().getFragment(savedInstanceState, "myfragment");
+            section = savedInstanceState.getString("section");
+            bIncludeViral = savedInstanceState.getBoolean("viral", false);
+            sort = savedInstanceState.getString("sort");
+            window = savedInstanceState.getString("window");
         }
 
         Application.getEventBus().register(this);
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        //Save the fragment's instance
+        outState.putString("section", section);
+        outState.putString("sort", sort);
+        outState.putString("window", window);
+        outState.putBoolean("viral", bIncludeViral);
+        getSupportFragmentManager().putFragment(outState, "myfragment", myFragment);
+        super.onSaveInstanceState(outState);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        //MenuItem item = menu.getItem(0);
+        MenuItem item = menu.findItem(R.id.viral);
+        if (item != null)
+            item.setChecked(bIncludeViral);
+        return super.onPrepareOptionsMenu(menu);
+    }
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_section:
+                Log.d(TAG, "SECTION PRESSED");
+                return true;
+
+            case R.id.viral:
+                Log.d(TAG, "viral checked");
+                bIncludeViral = !bIncludeViral;
+                item.setChecked(bIncludeViral);
+                reload();
+                return true;
+
+            case R.id.sectionhot:
+                Log.d(TAG, "Section hot selected");
+                section = "hot";
+                reload();
+                return true;
+
+            case R.id.sectiontop:
+                Log.d(TAG, "Section top selected");
+                section = "top";
+                reload();
+                return true;
+
+            case R.id.sectionuser:
+                Log.d(TAG, "Section user selected");
+                section = "user";
+                reload();
+                return true;
+
+
+            //WINDOW section
+            case R.id.window_all:
+                Log.d(TAG, "window all");
+                window = "all";
+                reload();
+                return true;
+
+            case R.id.window_day:
+                Log.d(TAG, "window day");
+                window = "day";
+                reload();
+                return true;
+
+            case R.id.window_top:
+                Log.d(TAG, "window top");
+                window = "top";
+                reload();
+                return true;
+
+            case R.id.window_week:
+                Log.d(TAG, "window week");
+                window = "week";
+                reload();
+                return true;
+
+            case R.id.window_year:
+                Log.d(TAG, "window year");
+                window = "year";
+                reload();
+                return true;
+
+            //SORT
+            case R.id.sort_viral:
+                Log.d(TAG, "sort viral");
+                sort = "viral";
+                reload();
+                return true;
+
+            case R.id.sort_top:
+                Log.d(TAG, "sort top");
+                sort = "top";
+                reload();
+                return true;
+
+            case R.id.sort_time:
+                Log.d(TAG, "sort time");
+                sort = "time";
+                reload();
+                return true;
+
+            case R.id.sort_rising:
+                Log.d(TAG, "sort rising");
+                if (section != null && section.equalsIgnoreCase("user")){
+                    sort = "rising";
+                    reload();
+                } else {
+                    Toast.makeText(this,getString(R.string.sort_not_available), Toast.LENGTH_SHORT).show();
+                }
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
+
+
 
     /**
      * A placeholder fragment containing a simple view.
@@ -80,7 +200,7 @@ public class MainActivity extends BaseActivity {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
             gridView = (GridView) rootView.findViewById(R.id.gridview);
-            adapter = new ImagesListAdapter(getActivity(), null);
+            adapter = new ImagesListAdapter(getActivity(), new ArrayList<BaseModel>());
             gridView.setAdapter(adapter);
 
             return rootView;
@@ -88,11 +208,14 @@ public class MainActivity extends BaseActivity {
     }
 
 
+    private void reload(){
+        GalleryService.getInstance().gallery(Application.getAuthorizationHeader(), section, sort, window, 0, bIncludeViral);
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
-        GalleryService.getInstance().gallery(Application.getAuthorizationHeader(), "hot", "viral", 0, true);
-
+        reload();
     }
 
 
@@ -122,9 +245,8 @@ public class MainActivity extends BaseActivity {
                 }
             });
         else{
-            ///myWebView.loadData(event.object.data,"text/html","utf-8");
-            //TODO: show grid
             myFragment.adapter.setItemsList(event.object.data);
+            myFragment.adapter.notifyDataSetChanged();
         }
     }
 

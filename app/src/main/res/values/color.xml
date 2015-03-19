@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="white">#FFFFFF</color>
+    <color name="grey">#eeeeee</color>
+    <color name="grey_dark">#999999</color>
+    <color name="grey_dark_super">#333333</color>
+    <color name="black">#000000</color>
+    <color name="blue">#286CB4</color>
+    <color name="bkg_textview">#CC999999</color>
+
+</resources>

@@ -40,9 +40,9 @@ public class GalleryService {
                 .build().create(IGalleryApi.class);
     }
 
-    public void gallery(String authorization, String section, String sort, int page, boolean viral) {
+    public void gallery(String authorization, String section, String sort, String window, int page, boolean viral) {
         Application.getEventBus().post(new Event.GalleryRequestStartEvent());
-        service.gallery(authorization, section, sort, page, viral, new Callback<GalleryResponse>() {
+        service.gallery(authorization, section, sort, window, page, viral, new Callback<GalleryResponse>() {
 
             @Override
             public void success(GalleryResponse resp, Response response) {
